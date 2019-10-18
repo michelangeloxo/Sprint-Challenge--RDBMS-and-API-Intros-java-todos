@@ -1,10 +1,8 @@
 package com.lambdaschool.oauth2.services;
 
-import com.lambdaschool.oauth2.models.Role;
-import com.lambdaschool.oauth2.models.User;
-import com.lambdaschool.oauth2.models.UserRoles;
-import com.lambdaschool.oauth2.models.Useremail;
+import com.lambdaschool.oauth2.models.*;
 import com.lambdaschool.oauth2.repository.RoleRepository;
+import com.lambdaschool.oauth2.repository.TodoRepository;
 import com.lambdaschool.oauth2.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +29,23 @@ public class UserServiceImpl implements UserDetailsService,
 
     @Autowired
     private RoleRepository rolerepos;
+
+    @Autowired
+    private TodoRepository todorepos;
+
+    @Override
+    public Todo addTodo(Todo todo, long userid)
+    {
+        Todo newTodo = new Todo();
+
+        User currentUser = findUserById(userid);
+
+        newTodo.setDescription(todo.getDescription());
+        newTodo.setDatestarted(todo.getDatestarted());
+        newTodo.setUser(currentUser);
+
+        return todorepos.save(newTodo);
+    }
 
     @Transactional
     @Override

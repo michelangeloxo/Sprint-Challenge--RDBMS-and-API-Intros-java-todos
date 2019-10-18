@@ -1,5 +1,6 @@
 package com.lambdaschool.oauth2.services;
 
+import com.lambdaschool.oauth2.models.Todo;
 import com.lambdaschool.oauth2.models.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -30,4 +31,6 @@ public interface UserService
 
     void addUserRole(long userid,
                      long roleid);
+
+    Todo addTodo(Todo todo, long userid);
 }

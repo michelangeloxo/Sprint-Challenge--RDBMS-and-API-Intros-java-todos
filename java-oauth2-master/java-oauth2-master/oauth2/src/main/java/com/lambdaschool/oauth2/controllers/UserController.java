@@ -1,5 +1,6 @@
 package com.lambdaschool.oauth2.controllers;
 
+import com.lambdaschool.oauth2.models.Todo;
 import com.lambdaschool.oauth2.models.User;
 import com.lambdaschool.oauth2.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -134,6 +135,30 @@ public class UserController
                                     HttpStatus.CREATED);
     }
 
+    // POST -- http://localhost:2019/users/todo/{userid}
+    // adds a to-do to the assigned user
+    @PostMapping(value = "/todo/{userid}",
+                 consumes = {"application/json"})
+    public ResponseEntity<?> addTodo(@Valid
+                                     @RequestBody
+                                             Todo todo,
+                                     @PathVariable long userid)
+    {
+        userService.addTodo(todo, userid);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    // DELETE - http://localhost:2019/users/user/{id}
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @DeleteMapping("/userid/{userid}")
+    public ResponseEntity<?> deleteUserById(
+            @PathVariable
+                    long userid)
+    {
+        userService.delete(userid);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
     // http://localhost:2019/users/user/7
     //        {
@@ -167,44 +192,44 @@ public class UserController
 
 
     // http://localhost:2019/users/user/14
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    @DeleteMapping("/user/{id}")
-    public ResponseEntity<?> deleteUserById(
-            @PathVariable
-                    long id)
-    {
-        userService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+//    @DeleteMapping("/user/{id}")
+//    public ResponseEntity<?> deleteUserById(
+//            @PathVariable
+//                    long id)
+//    {
+//        userService.delete(id);
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
 
     // http://localhost:2019/users/user/15/role/2
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    @DeleteMapping("/user/{userid}/role/{roleid}")
-    public ResponseEntity<?> deleteUserRoleByIds(
-            @PathVariable
-                    long userid,
-            @PathVariable
-                    long roleid)
-    {
-        userService.deleteUserRole(userid,
-                                   roleid);
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+//    @DeleteMapping("/user/{userid}/role/{roleid}")
+//    public ResponseEntity<?> deleteUserRoleByIds(
+//            @PathVariable
+//                    long userid,
+//            @PathVariable
+//                    long roleid)
+//    {
+//        userService.deleteUserRole(userid,
+//                                   roleid);
+//
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
 
 
     // http://localhost:2019/users/user/15/role/2
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    @PostMapping("/user/{userid}/role/{roleid}")
-    public ResponseEntity<?> postUserRoleByIds(
-            @PathVariable
-                    long userid,
-            @PathVariable
-                    long roleid)
-    {
-        userService.addUserRole(userid,
-                                roleid);
-
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
+//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+//    @PostMapping("/user/{userid}/role/{roleid}")
+//    public ResponseEntity<?> postUserRoleByIds(
+//            @PathVariable
+//                    long userid,
+//            @PathVariable
+//                    long roleid)
+//    {
+//        userService.addUserRole(userid,
+//                                roleid);
+//
+//        return new ResponseEntity<>(HttpStatus.CREATED);
+//    }
 }
